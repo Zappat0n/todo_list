@@ -1,0 +1,72 @@
+.todo {
+  position: relative;
+  background: $light-grey-2;
+  padding: 1rem;
+
+  &__rmbtn {
+    position: absolute;
+    top: 2.4rem;
+    right: 2rem;
+  }
+
+  &__att {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.4rem;
+  }
+
+  &__priority {
+    background: $light-grey-1;
+    font-size: 1.2rem;
+    padding: 0.2rem 0.8rem;
+    border-radius: 3px;
+    font-weight: bold;
+    color: $white;
+    margin-right: 1rem;
+
+    &.high {
+      background: $red;
+    }
+
+    &.middle {
+      background: $green;
+    }
+
+    &.low {
+      background: $dark-blue;
+    }
+  }
+
+  &__limit {
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+
+    .iconify {
+      margin-right: 0.4rem;
+    }
+  }
+
+  &__title {
+    font-size: 2rem;
+    display: block;
+    max-width: 40rem;
+    word-break: break-all;
+  }
+
+  &__more {
+    position: absolute;
+    top: 2.4rem;
+    right: 4.6rem;
+    margin: 0;
+  }
+
+  &__detail {
+    display: none;
+
+    &.open {
+      display: block;
+    }
+  }
+}

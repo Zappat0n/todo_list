@@ -1,0 +1,15 @@
+.main {
+  min-height: 90vh;
+  width: $basic-width;
+  max-width: $basic-max-width;
+  margin: 1rem auto;
+  display: flex;
+
+  &__left {
+    flex: 0 0 24rem;
+  }
+
+  &__right {
+    flex: 1;
+  }
+}
