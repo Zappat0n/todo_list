@@ -1,16 +1,14 @@
 import Project from '../models/project';
 import { saveData } from '../db/storage';
 // eslint-disable-next-line import/no-cycle
-import projectView from '../views/project';
+import renderProjects from '../views/renderProjects';
 
 const projectController = (projects) => {
   const createProject = (title, description) => {
     const project = new Project(title, description);
     projects.push(project);
     saveData(projects);
-    document.querySelector('.main__right').innerHTML = '';
-    document.querySelector('.project-tabs').innerHTML = '';
-    projectView().generateProject(project);
+    renderProjects(projects);
     return project;
   };
 
@@ -18,10 +16,10 @@ const projectController = (projects) => {
     const index = projects.findIndex(project => project.id === id);
     projects.splice(index, 1);
     saveData(projects);
-    projectView().generateProject(projects[0]);
+    renderProjects(projects);
   };
 
-  return { createProject, projects, removeProject };
+  return { createProject, removeProject };
 };
 
 export { projectController as default };

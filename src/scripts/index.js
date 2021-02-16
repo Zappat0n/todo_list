@@ -1,13 +1,17 @@
 import '../scss/styles.scss';
-import Project from './modules/models/project';
-import { loadData, saveData } from './modules/db/storage';
+
+import { loadData } from './modules/db/storage';
+// eslint-disable-next-line import/no-cycle
 import projectController from './modules/controller/project';
+// eslint-disable-next-line import/no-cycle
 import projectView from './modules/views/project';
+// eslint-disable-next-line import/no-cycle
+import renderProjects from './modules/views/renderProjects';
 
-const controller = projectController(loadData());
-
-projectView().loadProjects();
-projectView().getUserInput(controller);
+const projects = loadData();
+const controller = projectController(projects);
+projectView().getUserInput(controller, projects);
+renderProjects(projects);
 
 // More Btns
 const moreBtns = document.querySelectorAll('.todo__more');
@@ -36,24 +40,22 @@ addPrBtns.forEach(btn => {
   });
 });
 
-const openTab = (id) => {
-  document.querySelectorAll('.project-tabs__item').forEach(tab => {
-    tab.classList.remove('active');
-  });
-  document.querySelectorAll('.project-container').forEach(item => {
-    item.classList.remove('active');
-  });
+// const openTab = (id) => {
+//   document.querySelectorAll('.project-tabs__item').forEach(tab => {
+//     tab.classList.remove('active');
+//   });
+//   document.querySelectorAll('.project-container').forEach(item => {
+//     item.classList.remove('active');
+//   });
 
-  document.getElementById(id).classList.add('active');
-  document.querySelector(`div[data-project='${id}']`).classList.add('active');
-};
+//   document.getElementById(id).classList.add('active');
+//   document.querySelector(`div[data-project='${id}']`).classList.add('active');
+// };
 
-document.querySelectorAll('.project-tabs__item').forEach(tab => {
-  tab.addEventListener('click', e => {
-    openTab(e.target.getAttribute('data-project'));
-  });
-});
+// document.querySelectorAll('.project-tabs__item').forEach(tab => {
+//   tab.addEventListener('click', e => {
+//     openTab(e.target.getAttribute('data-project'));
+//   });
+// });
 
-document.querySelector('.default-open').classList.add('active');
-
-export { controller as default};
+export { controller as default };

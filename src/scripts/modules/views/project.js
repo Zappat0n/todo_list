@@ -129,21 +129,26 @@ const projectView = () => {
     tabItem.classList.add('active');
   };
 
-  const generatePrTabs = (project) => {
+  const generatePrTabs = (projects) => {
     const tabsContainer = document.querySelector('.project-tabs');
-    const tabItem = myCreateElement('div', 'project-tabs__item');
-    tabItem.textContent = project.title;
-    tabsContainer.appendChild(tabItem);
 
-    tabItem.addEventListener('click', (e) => {
-      openTab(project, e.target);
-    });
+    if (projects.length > 0) {
+      projects.forEach((project, index) => {
+        const tabItem = myCreateElement('div', 'project-tabs__item');
+        if (index === 0) {
+          tabItem.classList.add('default-open');
+        }
+        tabItem.textContent = project.title;
+        tabsContainer.appendChild(tabItem);
+
+        tabItem.addEventListener('click', (e) => {
+          openTab(project, e.target);
+        });
+      });
+    }
   };
 
-  const generateProject = (project) => {
-    generatePrTabs(project);
-
-    const mainRight = document.querySelector('.main__right');
+  const generatePrContainer = (project) => {
     const prContainer = myCreateElement('div', 'project-container');
     prContainer.setAttribute('id', project.id);
 
@@ -157,15 +162,19 @@ const projectView = () => {
     prDesc.textContent = project.description;
 
     const prTodos = myCreateElement('div', 'project__todos');
-
-    mainRight.appendChild(prContainer);
     prContainer.appendChild(pr);
     pr.appendChild(prItem);
     prItem.appendChild(prTitle);
     prItem.appendChild(prDesc);
     prItem.appendChild(prTodos);
-
     generateTodos(project, prTodos);
+
+    return prContainer;
+  };
+
+  const generateProject = (project) => {
+    const mainRight = document.querySelector('.main__right');
+    mainRight.appendChild(generatePrContainer(project));
   };
 
   const clearPrField = (el) => {
@@ -173,14 +182,9 @@ const projectView = () => {
     el.prDesc.value = '';
   };
 
-  const loadProjects = () => {
-    controller.projects.forEach(project => {
-      generateProject(project);
-    });
-  };
-
   const getUserInput = (controller) => {
     const formAddProject = document.querySelector('.add-project-form');
+
     formAddProject.addEventListener('submit', (e) => {
       e.preventDefault();
       const title = e.target.elements.prTitle.value;
@@ -190,7 +194,7 @@ const projectView = () => {
     });
   };
 
-  return { getUserInput, loadProjects, generateProject };
+  return { getUserInput, generatePrTabs, generateProject };
 };
 
 export { projectView as default };
