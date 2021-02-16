@@ -6,6 +6,7 @@ const projectController = (projects) => {
     const project = new Project(title, description);
     projects.push(project);
     saveData(projects);
+    return project;
   };
 
   return { createProject };
