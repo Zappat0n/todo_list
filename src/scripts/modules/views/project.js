@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-cycle
+import controller from '../../index';
+
 const projectView = () => {
   const myCreateElement = (el, className) => {
     const element = document.createElement(el);
@@ -86,7 +89,7 @@ const projectView = () => {
     todoItem.appendChild(todoDetail);
   };
 
-  const generateProjectFooter = () => {
+  const generateProjectFooter = (project) => {
     const prFooter = document.createElement('div');
 
     const addTodoBtn = generateBtn('Add Todo');
@@ -94,6 +97,10 @@ const projectView = () => {
     const addTodoForm = generateForm(null, 'add-todo-form');
     const prRmBtn = generateBtn('Remove Project');
     prRmBtn.classList.add('project__rmbtn');
+
+    prRmBtn.addEventListener('click', () => {
+      controller.removeProject(project.id);
+    });
 
     prFooter.appendChild(addTodoBtn);
     prFooter.appendChild(addTodoForm);
@@ -107,7 +114,7 @@ const projectView = () => {
         prTodos.appendChild(generateTodo(todo));
       });
     }
-    prTodos.appendChild(generateProjectFooter());
+    prTodos.appendChild(generateProjectFooter(project));
   };
 
   const openTab = (project, tabItem) => {

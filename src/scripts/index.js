@@ -54,3 +54,5 @@ document.querySelectorAll('.project-tabs__item').forEach(tab => {
 });
 
 document.querySelector('.default-open').classList.add('active');
+
+export { controller as default};

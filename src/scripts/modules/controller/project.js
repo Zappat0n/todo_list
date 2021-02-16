@@ -9,7 +9,12 @@ const projectController = (projects) => {
     return project;
   };
 
-  return { createProject };
+  const removeProject = (id) => {
+    const index = projects.findIndex(project => project.id === id);
+    projects.splice(index, 1);
+  };
+
+  return { createProject, projects, removeProject };
 };
 
 export { projectController as default };
