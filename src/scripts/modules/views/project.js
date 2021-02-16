@@ -173,19 +173,24 @@ const projectView = () => {
     el.prDesc.value = '';
   };
 
+  const loadProjects = () => {
+    controller.projects.forEach(project => {
+      generateProject(project);
+    });
+  };
+
   const getUserInput = (controller) => {
     const formAddProject = document.querySelector('.add-project-form');
     formAddProject.addEventListener('submit', (e) => {
       e.preventDefault();
       const title = e.target.elements.prTitle.value;
       const description = e.target.elements.prDesc.value;
-      const newProject = controller.createProject(title, description);
+      controller.createProject(title, description);
       clearPrField(e.target.elements);
-      generateProject(newProject);
     });
   };
 
-  return { getUserInput };
+  return { getUserInput, loadProjects, generateProject };
 };
 
 export { projectView as default };

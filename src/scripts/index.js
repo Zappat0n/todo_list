@@ -6,6 +6,7 @@ import projectView from './modules/views/project';
 
 const controller = projectController(loadData());
 
+projectView().loadProjects();
 projectView().getUserInput(controller);
 
 // More Btns
