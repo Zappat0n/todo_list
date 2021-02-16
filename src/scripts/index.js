@@ -1,4 +1,14 @@
 import '../scss/styles.scss';
+import Project from './modules/models/project';
+import { loadData, saveData } from './modules/db/storage';
+import projectController from './modules/controller/project';
+import projectForm from './modules/views/project_form';
+
+const controller = projectController(loadData());
+
+projectForm().getUserInput(controller);
+
+
 
 // More Btns
 const moreBtns = document.querySelectorAll('.todo__more');

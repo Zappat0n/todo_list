@@ -1,8 +1,8 @@
 class Project {
-  constructor(title, description) {
+  constructor(title, description, todos = []) {
     this.title = title;
     this.description = description;
-    this.todos = [];
+    this.todos = todos;
   }
 }
 
