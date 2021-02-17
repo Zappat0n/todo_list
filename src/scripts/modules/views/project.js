@@ -10,6 +10,19 @@ const projectView = () => {
     return element;
   };
 
+  const openCurrentTabAndContainer = (project) => {
+    document.querySelectorAll('.project-tabs__item').forEach(tab => {
+      if (project.id === tab.getAttribute('data-id')) {
+        tab.classList.add('active');
+      }
+    });
+    document.querySelectorAll('.project-container').forEach(container => {
+      if (project.id === container.getAttribute('id')) {
+        container.classList.add('active');
+      }
+    });
+  };
+
   const generateFormField = (labelName, type, inputName) => {
     const field = myCreateElement('div', 'form__field');
     const label = myCreateElement('label');
@@ -106,6 +119,7 @@ const projectView = () => {
 
     todoRmBtn.addEventListener('click', () => {
       todoController(projects, project).removeTodo(todo.id);
+      openCurrentTabAndContainer(project);
     });
 
     todoMoreBtn.addEventListener('click', () => {
@@ -144,6 +158,7 @@ const projectView = () => {
       const priority = e.target.elements.todoPriority.value;
       todoController(projects, project).createTodo(title, description, dueDate, priority);
       clearTodoField(e.target.elements);
+      openCurrentTabAndContainer(project)
     });
     prRmBtn.addEventListener('click', () => {
       projectController.removeProject(project.id);
@@ -171,14 +186,11 @@ const projectView = () => {
     const tabsContainer = document.querySelector('.project-tabs');
 
     if (projects.length > 0) {
-      projects.forEach((project, index) => {
+      projects.forEach((project) => {
         const tabItem = myCreateElement('div', 'project-tabs__item');
-        if (index === 0) {
-          tabItem.classList.add('default-open');
-        }
         tabItem.textContent = project.title;
+        tabItem.setAttribute('data-id', project.id);
         tabsContainer.appendChild(tabItem);
-
         tabItem.addEventListener('click', (e) => {
           openTab(project, e.target);
         });
@@ -233,8 +245,9 @@ const projectView = () => {
       e.preventDefault();
       const title = e.target.elements.prTitle.value;
       const description = e.target.elements.prDesc.value;
-      projectController.createProject(title, description);
+      const project = projectController.createProject(title, description);
       clearPrField(e.target.elements);
+      openCurrentTabAndContainer(project);
     });
   };
 

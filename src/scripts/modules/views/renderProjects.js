@@ -10,9 +10,6 @@ const renderProjects = (projects) => {
   projects.forEach(project => {
     projectView().generateProject(project, projectController(projects));
   });
-  if (projects.length > 0) {
-    document.querySelector('.default-open').click();
-  }
 };
 
 export default renderProjects;

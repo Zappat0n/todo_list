@@ -6,18 +6,11 @@ import projectView from './modules/views/project';
 import renderProjects from './modules/views/renderProjects';
 // eslint-disable-next-line import/no-cycle
 import projectController from './modules/controller/project';
+import initialView from './modules/views/initial-view';
 
 const projects = loadData();
 projectView().getUserInput(projectController(projects));
 renderProjects(projects);
-
-// Add Project Btns
-const addPrBtns = document.querySelectorAll('.add-project-btn');
-addPrBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.textContent = btn.textContent === 'Add Project' ? 'Close' : 'Add Project';
-    btn.nextElementSibling.classList.toggle('open');
-  });
-});
+initialView(projects);
 
 export default projects;
