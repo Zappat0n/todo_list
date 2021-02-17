@@ -30,7 +30,7 @@ A list of commonly used resources that I find helpful is listed in the acknowled
 
 ## Live Demo
 
-[Live Demo Link](https://yocosaka.github.io)
+[Live Demo Link](https://mv-todo-list.netlify.app/)
 
 
 ## Getting Started
@@ -49,18 +49,17 @@ e.g. $ git clone https://github.com/yourUsername/yourProjectName
 
 ## Authors
 
-👤 **Author1**
-
-- GitHub: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
-- LinkedIn: [LinkedIn](https://linkedin.com/linkedinhandle)
-
 👤 **Yoko Saka**
 
 - GitHub: [@yocosaka](https://github.com/yocosaka)
 - Twitter: [@yocosaka](https://twitter.com/yocosaka)
 - LinkedIn: [Yoko Saka](https://www.linkedin.com/in/yokosaka)
 
+
+👤 **Angel Barros**
+
+- GitHub: [@Zappat0n](https://github.com/Zappat0n)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/angel-barros/)
 
 ## Contributing
 
@@ -85,6 +84,6 @@ This project is [MIT](./LICENSE) licensed.
 
 
 ## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
+* [Odin Project: Todo List](https://www.theodinproject.com/courses/javascript/lessons/todo-list)
+* [uuid](https://github.com/uuidjs/uuid)
+* [iconify](https://iconify.design/icon-sets/)

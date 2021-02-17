@@ -1,4 +1,14 @@
+// eslint-disable-next-line import/no-cycle
+import projectView from './project';
+// eslint-disable-next-line import/no-cycle
+import renderProjects from './renderProjects';
+// eslint-disable-next-line import/no-cycle
+import projectController from '../controller/project';
+
 const initialView = (projects) => {
+  projectView().getUserInput(projectController(projects));
+  renderProjects(projects);
+
   if (projects.length > 0) {
     const tabs = document.querySelectorAll('.project-tabs__item');
     tabs[0].classList.add('active');

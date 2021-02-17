@@ -207,13 +207,13 @@ const projectView = () => {
     const tabsContainer = document.querySelector('.project-tabs');
 
     if (projects.length > 0) {
-      projects.forEach((project) => {
+      projects.forEach((pro) => {
         const tabItem = myCreateElement('div', 'project-tabs__item');
-        tabItem.textContent = project.title;
-        tabItem.setAttribute('data-id', project.id);
+        tabItem.textContent = pro.title;
+        tabItem.setAttribute('data-id', pro.id);
         tabsContainer.appendChild(tabItem);
         tabItem.addEventListener('click', (e) => {
-          openTab(project, e.target);
+          openTab(pro, e.target);
         });
       });
     }
