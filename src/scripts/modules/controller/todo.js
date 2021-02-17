@@ -19,7 +19,16 @@ const todoController = (projects, project) => {
     renderProjects(projects);
   };
 
-  return { createTodo, removeTodo };
+  const overwriteTodo = (todo, el) => {
+    todo.title = el.todoTitle.value;
+    todo.description = el.todoDesc.value;
+    todo.dueDate = el.todoDue.value;
+    todo.priority = el.todoPriority.value;
+    saveData(projects);
+    renderProjects(projects);
+  };
+
+  return { createTodo, removeTodo, overwriteTodo };
 };
 
 export { todoController as default };

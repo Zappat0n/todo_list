@@ -2,9 +2,6 @@
 import projects from '../../index';
 // eslint-disable-next-line import/no-cycle
 import todoController from '../controller/todo';
-import { saveData } from '../db/storage';
-// eslint-disable-next-line import/no-cycle
-import renderProjects from './renderProjects';
 
 const projectView = () => {
   const myCreateElement = (el, className) => {
@@ -87,17 +84,6 @@ const projectView = () => {
     el.todoPriority.value = '';
   };
 
-  const overwriteTodo = (todo, el, project) => {
-    todo.title = el.todoTitle.value;
-    todo.description = el.todoDesc.value;
-    todo.dueDate = el.todoDue.value;
-    todo.priority = el.todoPriority.value;
-    saveData(projects);
-    renderProjects(projects);
-    clearTodoField(el);
-    openCurrentTabAndContainer(project);
-  };
-
   const generateTodo = (todo, project) => {
     const todoItem = myCreateElement('div', 'todo');
 
@@ -152,7 +138,9 @@ const projectView = () => {
 
     editTodoForm.addEventListener('submit', e => {
       e.preventDefault();
-      overwriteTodo(todo, e.target.elements, project);
+      todoController(projects, project).overwriteTodo(todo, e.target.elements);
+      clearTodoField(e.target.elements);
+      openCurrentTabAndContainer(project);
     });
 
     return todoItem;
