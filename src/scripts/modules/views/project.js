@@ -2,6 +2,9 @@
 import projects from '../../index';
 // eslint-disable-next-line import/no-cycle
 import todoController from '../controller/todo';
+import { saveData } from '../db/storage';
+// eslint-disable-next-line import/no-cycle
+import renderProjects from './renderProjects';
 
 const projectView = () => {
   const myCreateElement = (el, className) => {
@@ -31,11 +34,12 @@ const projectView = () => {
     const input = document.createElement('input');
     input.setAttribute('type', type);
     input.setAttribute('name', inputName);
+    input.required = true;
 
     field.appendChild(label);
     field.appendChild(input);
 
-    return field;
+    return [field, input];
   };
 
   const generateBtn = (text) => {
@@ -48,9 +52,9 @@ const projectView = () => {
     const form = document.createElement('form');
     form.classList.add('form', formClass);
 
-    const title = generateFormField('Title', 'text', 'todoTitle');
-    const description = generateFormField('Description', 'text', 'todoDesc');
-    const dueDate = generateFormField('Due date', 'date', 'todoDue');
+    const [title, titleInput] = generateFormField('Title', 'text', 'todoTitle');
+    const [description, descInput] = generateFormField('Description', 'text', 'todoDesc');
+    const [dueDate, dueInput] = generateFormField('Due date', 'date', 'todoDue');
     const prFieldForPriority = document.createElement('div');
     prFieldForPriority.classList.add('project__field');
     prFieldForPriority.innerHTML = `
@@ -62,9 +66,9 @@ const projectView = () => {
     </select>
     `;
     if (formClass === 'edit-todo-form') {
-      title.value = todo.title;
-      description.value = todo.description;
-      dueDate.value = todo.dueDate;
+      titleInput.value = todo.title;
+      descInput.value = todo.description;
+      dueInput.value = todo.dueDate;
       prFieldForPriority.querySelector('.todo__select__priority').value = todo.priority;
     }
     form.appendChild(title);
@@ -74,6 +78,24 @@ const projectView = () => {
     form.appendChild(generateBtn('Save Todo'));
 
     return form;
+  };
+
+  const clearTodoField = (el) => {
+    el.todoTitle.value = '';
+    el.todoDesc.value = '';
+    el.todoDue.value = '';
+    el.todoPriority.value = '';
+  };
+
+  const overwriteTodo = (todo, el, project) => {
+    todo.title = el.todoTitle.value;
+    todo.description = el.todoDesc.value;
+    todo.dueDate = el.todoDue.value;
+    todo.priority = el.todoPriority.value;
+    saveData(projects);
+    renderProjects(projects);
+    clearTodoField(el);
+    openCurrentTabAndContainer(project);
   };
 
   const generateTodo = (todo, project) => {
@@ -110,7 +132,8 @@ const projectView = () => {
     const todoDesc = myCreateElement('p', 'todo__desc');
     todoDesc.textContent = todo.description;
     todoDetail.appendChild(todoDesc);
-    todoDetail.appendChild(generateForm(todo, 'edit-todo-form'));
+    const editTodoForm = generateForm(todo, 'edit-todo-form');
+    todoDetail.appendChild(editTodoForm);
     todoItem.appendChild(todoRmBtn);
     todoItem.appendChild(todoAtt);
     todoItem.appendChild(todoTitle);
@@ -127,14 +150,12 @@ const projectView = () => {
       todoMoreBtn.nextElementSibling.classList.toggle('open');
     });
 
-    return todoItem;
-  };
+    editTodoForm.addEventListener('submit', e => {
+      e.preventDefault();
+      overwriteTodo(todo, e.target.elements, project);
+    });
 
-  const clearTodoField = (el) => {
-    el.todoTitle.value = '';
-    el.todoDesc.value = '';
-    el.todoDue.value = '';
-    el.todoPriority.value = '';
+    return todoItem;
   };
 
   const generateProjectFooter = (project, projectController) => {
@@ -158,7 +179,7 @@ const projectView = () => {
       const priority = e.target.elements.todoPriority.value;
       todoController(projects, project).createTodo(title, description, dueDate, priority);
       clearTodoField(e.target.elements);
-      openCurrentTabAndContainer(project)
+      openCurrentTabAndContainer(project);
     });
     prRmBtn.addEventListener('click', () => {
       projectController.removeProject(project.id);
