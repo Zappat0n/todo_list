@@ -132,8 +132,8 @@ const projectView = () => {
       const title = e.target.elements.prTitle.value;
       const description = e.target.elements.prDesc.value;
       const project = projectController.createProject(title, description);
+      projectController.currentProject = project;
       renderProjects();
-      generateProject(project);
       clearPrField(e.target.elements);
       openCurrentTabAndContainer(project);
     });
