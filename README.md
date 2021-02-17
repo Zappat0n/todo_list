@@ -54,7 +54,8 @@ To get a local copy up and running follow these simple example steps.
 6. Type git clone, and then paste the URL you copied in Step 3. <br>
 e.g. $ git clone https://github.com/Zappat0n/todo_list.git
 7. Press Enter. Your local copy will be created.
-
+8. On your console, move to the place where this files are cloned
+9. Run `npm run dev`, then server is automatically opened
 
 ## Authors
 
