@@ -1,5 +1,7 @@
 // eslint-disable-next-line import/no-cycle
-import projectController from '../../index';
+import projects from '../../index';
+// eslint-disable-next-line import/no-cycle
+import todoController from '../controller/todo';
 
 const projectView = () => {
   const myCreateElement = (el, className) => {
@@ -36,25 +38,37 @@ const projectView = () => {
     const title = generateFormField('Title', 'text', 'todoTitle');
     const description = generateFormField('Description', 'text', 'todoDesc');
     const dueDate = generateFormField('Due date', 'date', 'todoDue');
-
-    form.appendChild(title);
-    form.appendChild(description);
-    form.appendChild(dueDate);
-    form.appendChild(generateBtn('Save Todo'));
-
+    const prFieldForPriority = document.createElement('div');
+    prFieldForPriority.classList.add('project__field');
+    prFieldForPriority.innerHTML = `
+    <span>Priority:</span>
+    <select name="todoPriority" class="todo__select__priority">
+      <option value="high">High</option>
+      <option value="middle">Middle</option>
+      <option value="low">Low</option>
+    </select>
+    `;
     if (formClass === 'edit-todo-form') {
       title.value = todo.title;
       description.value = todo.description;
       dueDate.value = todo.dueDate;
+      prFieldForPriority.querySelector('.todo__select__priority').value = todo.priority;
     }
+    form.appendChild(title);
+    form.appendChild(description);
+    form.appendChild(dueDate);
+    form.appendChild(prFieldForPriority);
+    form.appendChild(generateBtn('Save Todo'));
+
     return form;
   };
 
-  const generateTodo = (todo) => {
+  const generateTodo = (todo, project) => {
     const todoItem = myCreateElement('div', 'todo');
 
     const todoRmBtn = document.createElement('button');
     todoRmBtn.classList.add('todo__rmbtn', 'rmbtn');
+    todoRmBtn.textContent = 'x';
 
     const todoAtt = myCreateElement('div', 'todo__att');
     const todoPriority = document.createElement('div');
@@ -80,7 +94,7 @@ const projectView = () => {
 
     const todoDetail = myCreateElement('div', 'todo__detail');
 
-    const todoDesc = 'todo__detail'('p', 'todo__desc');
+    const todoDesc = myCreateElement('p', 'todo__desc');
     todoDesc.textContent = todo.description;
     todoDetail.appendChild(todoDesc);
     todoDetail.appendChild(generateForm(todo, 'edit-todo-form'));
@@ -89,6 +103,24 @@ const projectView = () => {
     todoItem.appendChild(todoTitle);
     todoItem.appendChild(todoMoreBtn);
     todoItem.appendChild(todoDetail);
+
+    todoRmBtn.addEventListener('click', () => {
+      todoController(projects, project).removeTodo(todo.id);
+    });
+
+    todoMoreBtn.addEventListener('click', () => {
+      todoMoreBtn.textContent = todoMoreBtn.textContent === 'More' ? 'Close' : 'More';
+      todoMoreBtn.nextElementSibling.classList.toggle('open');
+    });
+
+    return todoItem;
+  };
+
+  const clearTodoField = (el) => {
+    el.todoTitle.value = '';
+    el.todoDesc.value = '';
+    el.todoDue.value = '';
+    el.todoPriority.value = '';
   };
 
   const generateProjectFooter = (project, projectController) => {
@@ -106,6 +138,12 @@ const projectView = () => {
     });
     addTodoForm.addEventListener('submit', e => {
       e.preventDefault();
+      const title = e.target.elements.todoTitle.value;
+      const description = e.target.elements.todoDesc.value;
+      const dueDate = e.target.elements.todoDue.value;
+      const priority = e.target.elements.todoPriority.value;
+      todoController(projects, project).createTodo(title, description, dueDate, priority);
+      clearTodoField(e.target.elements);
     });
     prRmBtn.addEventListener('click', () => {
       projectController.removeProject(project.id);
@@ -115,15 +153,6 @@ const projectView = () => {
     prFooter.appendChild(addTodoForm);
     prFooter.appendChild(prRmBtn);
     return prFooter;
-  };
-
-  const generateTodos = (project, prTodos, projectController) => {
-    if (project.todos.length > 0) {
-      project.todos.forEach(todo => {
-        prTodos.appendChild(generateTodo(todo));
-      });
-    }
-    prTodos.appendChild(generateProjectFooter(project, projectController));
   };
 
   const openTab = (project, tabItem) => {
@@ -170,13 +199,19 @@ const projectView = () => {
     const prDesc = myCreateElement('p', 'project__desc');
     prDesc.textContent = project.description;
 
-    const prTodos = myCreateElement('div', 'project__todos');
+    const prTodosItem = myCreateElement('div', 'project__todos');
     prContainer.appendChild(pr);
     pr.appendChild(prItem);
     prItem.appendChild(prTitle);
     prItem.appendChild(prDesc);
-    prItem.appendChild(prTodos);
-    generateTodos(project, prTodos, projectController);
+    prItem.appendChild(prTodosItem);
+
+    if (project.todos.length > 0) {
+      project.todos.forEach(todo => {
+        prTodosItem.appendChild(generateTodo(todo, project));
+      });
+    }
+    prTodosItem.appendChild(generateProjectFooter(project, projectController));
 
     return prContainer;
   };
