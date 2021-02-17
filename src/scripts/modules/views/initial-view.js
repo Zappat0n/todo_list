@@ -4,8 +4,14 @@ import projectView from './project';
 import renderProjects from './renderProjects';
 // eslint-disable-next-line import/no-cycle
 import projectController from '../controller/project';
+import { loadData } from '../db/storage';
+import defaultData from '../db/defaultData';
 
 const initialView = (projects) => {
+  if (projects.length === 0) {
+    localStorage.setItem('projects', JSON.stringify(defaultData));
+    projects = loadData();
+  }
   projectView().getUserInput(projectController(projects));
   renderProjects(projects);
 
