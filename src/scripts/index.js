@@ -1,9 +1,26 @@
 import '../scss/styles.scss';
-import { loadData } from './modules/db/storage';
-// eslint-disable-next-line import/no-cycle
-import initialView from './modules/views/initial-view';
+import projectView from './modules/views/project';
+import storage from './modules/db/storage';
+import defaultData from './modules/db/defaultData';
 
-const projects = loadData();
-initialView(projects);
+if (storage.projects.length === 0) {
+  localStorage.setItem('projects', JSON.stringify(defaultData));
+  storage.load();
+}
+console.log(storage);
 
-export default projects;
+projectView().getUserInput();
+projectView().renderProjects();
+
+if (storage.projects.length > 0) {
+  const tabs = document.querySelectorAll('.project-tabs__item');
+  tabs[0].classList.add('active');
+  const container = document.querySelectorAll('.project-container');
+  container[0].classList.add('active');
+}
+
+const addPrBtn = document.querySelector('.add-project-btn');
+addPrBtn.addEventListener('click', () => {
+  addPrBtn.textContent = addPrBtn.textContent === 'Add Project' ? 'Close' : 'Add Project';
+  addPrBtn.nextElementSibling.classList.toggle('open');
+});

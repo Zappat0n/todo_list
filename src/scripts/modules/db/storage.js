@@ -1,14 +1,22 @@
-const saveData = (projects) => {
-  localStorage.setItem('projects', JSON.stringify(projects));
+const storageManager = () => {
+  const load = () => {
+    const storage = localStorage.getItem('projects');
+    try {
+      return storage ? JSON.parse(storage) : [];
+    } catch (ex) {
+      return [];
+    }
+  };
+
+  const projects = load();
+
+  const save = () => {
+    localStorage.setItem('projects', JSON.stringify(projects));
+  };
+
+  return { load, projects, save };
 };
 
-const loadData = () => {
-  const storage = localStorage.getItem('projects');
-  try {
-    return storage ? JSON.parse(storage) : [];
-  } catch (ex) {
-    return [];
-  }
-};
+const storage = storageManager();
 
-export { loadData, saveData };
+export { storage as default };

@@ -1,18 +1,18 @@
 import Todo from '../models/todo';
-import { saveData } from '../db/storage';
+import storage from '../db/storage';
 
-const todoController = (projects, project) => {
+const todoController = (project) => {
   const createTodo = (title, description, dueDate, priority) => {
     const todo = new Todo(title, description, dueDate, priority);
     project.todos.push(todo);
-    saveData(projects);
+    storage.save();
     return todo;
   };
 
   const removeTodo = (id) => {
     const index = project.todos.findIndex(todo => todo.id === id);
     project.todos.splice(index, 1);
-    saveData(projects);
+    storage.save();
   };
 
   const overwriteTodo = (todo, el) => {
@@ -20,7 +20,7 @@ const todoController = (projects, project) => {
     todo.description = el.todoDesc.value;
     todo.dueDate = el.todoDue.value;
     todo.priority = el.todoPriority.value;
-    saveData(projects);
+    storage.save();
   };
 
   return { createTodo, removeTodo, overwriteTodo };
