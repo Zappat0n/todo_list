@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import controller from '../../index';
+import projectController from '../../index';
 
 const projectView = () => {
   const myCreateElement = (el, className) => {
@@ -86,10 +86,12 @@ const projectView = () => {
     todoDetail.appendChild(generateForm(todo, 'edit-todo-form'));
     todoItem.appendChild(todoRmBtn);
     todoItem.appendChild(todoAtt);
+    todoItem.appendChild(todoTitle);
+    todoItem.appendChild(todoMoreBtn);
     todoItem.appendChild(todoDetail);
   };
 
-  const generateProjectFooter = (project) => {
+  const generateProjectFooter = (project, projectController) => {
     const prFooter = document.createElement('div');
 
     const addTodoBtn = generateBtn('Add Todo');
@@ -98,8 +100,15 @@ const projectView = () => {
     const prRmBtn = generateBtn('Remove Project');
     prRmBtn.classList.add('project__rmbtn');
 
+    addTodoBtn.addEventListener('click', (e) => {
+      e.target.textContent = e.target.textContent === 'Add Todo' ? 'Close' : 'Add Todo';
+      e.target.nextElementSibling.classList.toggle('open');
+    });
+    addTodoForm.addEventListener('submit', e => {
+      e.preventDefault();
+    });
     prRmBtn.addEventListener('click', () => {
-      controller.removeProject(project.id);
+      projectController.removeProject(project.id);
     });
 
     prFooter.appendChild(addTodoBtn);
@@ -108,13 +117,13 @@ const projectView = () => {
     return prFooter;
   };
 
-  const generateTodos = (project, prTodos) => {
+  const generateTodos = (project, prTodos, projectController) => {
     if (project.todos.length > 0) {
       project.todos.forEach(todo => {
         prTodos.appendChild(generateTodo(todo));
       });
     }
-    prTodos.appendChild(generateProjectFooter(project));
+    prTodos.appendChild(generateProjectFooter(project, projectController));
   };
 
   const openTab = (project, tabItem) => {
@@ -148,7 +157,7 @@ const projectView = () => {
     }
   };
 
-  const generatePrContainer = (project) => {
+  const generatePrContainer = (project, projectController) => {
     const prContainer = myCreateElement('div', 'project-container');
     prContainer.setAttribute('id', project.id);
 
@@ -167,14 +176,14 @@ const projectView = () => {
     prItem.appendChild(prTitle);
     prItem.appendChild(prDesc);
     prItem.appendChild(prTodos);
-    generateTodos(project, prTodos);
+    generateTodos(project, prTodos, projectController);
 
     return prContainer;
   };
 
-  const generateProject = (project) => {
+  const generateProject = (project, projectController) => {
     const mainRight = document.querySelector('.main__right');
-    mainRight.appendChild(generatePrContainer(project));
+    mainRight.appendChild(generatePrContainer(project, projectController));
   };
 
   const clearPrField = (el) => {
@@ -182,14 +191,14 @@ const projectView = () => {
     el.prDesc.value = '';
   };
 
-  const getUserInput = (controller) => {
+  const getUserInput = (projectController) => {
     const formAddProject = document.querySelector('.add-project-form');
 
     formAddProject.addEventListener('submit', (e) => {
       e.preventDefault();
       const title = e.target.elements.prTitle.value;
       const description = e.target.elements.prDesc.value;
-      controller.createProject(title, description);
+      projectController.createProject(title, description);
       clearPrField(e.target.elements);
     });
   };

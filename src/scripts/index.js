@@ -1,16 +1,14 @@
 import '../scss/styles.scss';
-
 import { loadData } from './modules/db/storage';
-// eslint-disable-next-line import/no-cycle
-import projectController from './modules/controller/project';
 // eslint-disable-next-line import/no-cycle
 import projectView from './modules/views/project';
 // eslint-disable-next-line import/no-cycle
 import renderProjects from './modules/views/renderProjects';
+// eslint-disable-next-line import/no-cycle
+import projectController from './modules/controller/project';
 
 const projects = loadData();
-const controller = projectController(projects);
-projectView().getUserInput(controller, projects);
+projectView().getUserInput(projectController(projects));
 renderProjects(projects);
 
 // More Btns
@@ -23,13 +21,13 @@ moreBtns.forEach(btn => {
 });
 
 // Add Todo Btns
-const addTodoBtns = document.querySelectorAll('.add-todo-btn');
-addTodoBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.textContent = btn.textContent === 'Add Todo' ? 'Close' : 'Add Todo';
-    btn.nextElementSibling.classList.toggle('open');
-  });
-});
+// const addTodoBtns = document.querySelectorAll('.add-todo-btn');
+// addTodoBtns.forEach(btn => {
+//   btn.addEventListener('click', () => {
+//     btn.textContent = btn.textContent === 'Add Todo' ? 'Close' : 'Add Todo';
+//     btn.nextElementSibling.classList.toggle('open');
+//   });
+// });
 
 // Add Project Btns
 const addPrBtns = document.querySelectorAll('.add-project-btn');
@@ -57,5 +55,3 @@ addPrBtns.forEach(btn => {
 //     openTab(e.target.getAttribute('data-project'));
 //   });
 // });
-
-export { controller as default };
