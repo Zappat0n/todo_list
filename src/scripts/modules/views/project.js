@@ -2,6 +2,7 @@
 import projects from '../../index';
 // eslint-disable-next-line import/no-cycle
 import todoController from '../controller/todo';
+import renderProjects from './renderProjects';
 
 const projectView = () => {
   const myCreateElement = (el, className) => {
@@ -128,6 +129,7 @@ const projectView = () => {
 
     todoRmBtn.addEventListener('click', () => {
       todoController(projects, project).removeTodo(todo.id);
+      renderProjects(projects);
       openCurrentTabAndContainer(project);
     });
 
@@ -139,6 +141,7 @@ const projectView = () => {
     editTodoForm.addEventListener('submit', e => {
       e.preventDefault();
       todoController(projects, project).overwriteTodo(todo, e.target.elements);
+      renderProjects(projects);
       clearTodoField(e.target.elements);
       openCurrentTabAndContainer(project);
     });
@@ -166,11 +169,13 @@ const projectView = () => {
       const dueDate = e.target.elements.todoDue.value;
       const priority = e.target.elements.todoPriority.value;
       todoController(projects, project).createTodo(title, description, dueDate, priority);
+      renderProjects(projects);
       clearTodoField(e.target.elements);
       openCurrentTabAndContainer(project);
     });
     prRmBtn.addEventListener('click', () => {
       projectController.removeProject(project.id);
+      renderProjects(projects);
     });
 
     prFooter.appendChild(addTodoBtn);
@@ -255,6 +260,7 @@ const projectView = () => {
       const title = e.target.elements.prTitle.value;
       const description = e.target.elements.prDesc.value;
       const project = projectController.createProject(title, description);
+      renderProjects(projects);
       clearPrField(e.target.elements);
       openCurrentTabAndContainer(project);
     });
