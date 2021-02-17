@@ -5,6 +5,20 @@ import projectController from '../controller/project';
 import todoView from './todo';
 
 const projectView = () => {
+  const generateProject = (project) => {
+    const mainRight = document.querySelector('.main__right');
+    if (project == null) { project = projectController.currentProject; }
+    // eslint-disable-next-line no-use-before-define
+    mainRight.appendChild(generatePrContainer(project));
+  };
+
+  const renderProjects = () => {
+    document.querySelector('.project-tabs').innerHTML = '';
+    document.querySelector('.main__right').innerHTML = '';
+    // eslint-disable-next-line no-use-before-define
+    generatePrTabs();
+  };
+
   const generateProjectFooter = (project) => {
     const prFooter = document.createElement('div');
 
@@ -75,12 +89,6 @@ const projectView = () => {
     }
   };
 
-  const renderProjects = () => {
-    document.querySelector('.project-tabs').innerHTML = '';
-    document.querySelector('.main__right').innerHTML = '';
-    generatePrTabs();
-  };
-
   const generatePrContainer = (project) => {
     const prContainer = myCreateElement('div', 'project-container');
     prContainer.setAttribute('id', project.id);
@@ -109,12 +117,6 @@ const projectView = () => {
     prTodosItem.appendChild(generateProjectFooter(project, projectController));
 
     return prContainer;
-  };
-
-  const generateProject = (project) => {
-    const mainRight = document.querySelector('.main__right');
-    if (project == null) { project = projectController.currentProject; }
-    mainRight.appendChild(generatePrContainer(project));
   };
 
   const clearPrField = (el) => {

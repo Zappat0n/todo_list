@@ -21,7 +21,6 @@ const controller = () => {
   const removeProject = (id) => {
     const index = storage.projects.findIndex(project => project.id === id);
     storage.projects.splice(index, 1);
-    currentProject = storage.projects[0];
     storage.save();
   };
 
