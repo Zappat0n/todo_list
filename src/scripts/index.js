@@ -7,6 +7,7 @@ if (storage.projects.length === 0) {
   localStorage.setItem('projects', JSON.stringify(defaultData));
   storage.load();
 }
+console.log(storage);
 
 projectView().getUserInput();
 projectView().renderProjects();
