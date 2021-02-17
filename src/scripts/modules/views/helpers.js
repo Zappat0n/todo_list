@@ -26,4 +26,17 @@ const generateBtn = (text) => {
   return button;
 };
 
-export { myCreateElement, generateFormField, generateBtn };
+const openCurrentTabAndContainer = (project) => {
+  document.querySelectorAll('.project-tabs__item').forEach(tab => {
+    if (project.id === tab.getAttribute('data-id')) {
+      tab.classList.add('active');
+    }
+  });
+  document.querySelectorAll('.project-container').forEach(container => {
+    if (project.id === container.getAttribute('id')) {
+      container.classList.add('active');
+    }
+  });
+};
+
+export { myCreateElement, generateFormField, generateBtn, openCurrentTabAndContainer };

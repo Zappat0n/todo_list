@@ -1,134 +1,16 @@
-// eslint-disable-next-line import/no-cycle
-import projects from '../../index';
-// eslint-disable-next-line import/no-cycle
+import storage from '../db/storage';
 import todoController from '../controller/todo';
-// eslint-disable-next-line import/no-cycle
-import { myCreateElement, generateBtn, generateFormField } from './helpers';
+import { myCreateElement, generateBtn, openCurrentTabAndContainer } from './helpers';
 import projectController from '../controller/project';
+import todoView from './todo';
 
 const projectView = () => {
-  const openCurrentTabAndContainer = (project) => {
-    document.querySelectorAll('.project-tabs__item').forEach(tab => {
-      if (project.id === tab.getAttribute('data-id')) {
-        tab.classList.add('active');
-      }
-    });
-    document.querySelectorAll('.project-container').forEach(container => {
-      if (project.id === container.getAttribute('id')) {
-        container.classList.add('active');
-      }
-    });
-  };
-
-  const generateForm = (todo, formClass) => {
-    const form = document.createElement('form');
-    form.classList.add('form', formClass);
-
-    const [title, titleInput] = generateFormField('Title', 'text', 'todoTitle');
-    const [description, descInput] = generateFormField('Description', 'text', 'todoDesc');
-    const [dueDate, dueInput] = generateFormField('Due date', 'date', 'todoDue');
-    const prFieldForPriority = document.createElement('div');
-    prFieldForPriority.classList.add('project__field');
-    prFieldForPriority.innerHTML = `
-    <span>Priority:</span>
-    <select name="todoPriority" class="todo__select__priority">
-      <option value="high">High</option>
-      <option value="middle">Middle</option>
-      <option value="low">Low</option>
-    </select>
-    `;
-    if (formClass === 'edit-todo-form') {
-      titleInput.value = todo.title;
-      descInput.value = todo.description;
-      dueInput.value = todo.dueDate;
-      prFieldForPriority.querySelector('.todo__select__priority').value = todo.priority;
-    }
-    form.appendChild(title);
-    form.appendChild(description);
-    form.appendChild(dueDate);
-    form.appendChild(prFieldForPriority);
-    form.appendChild(generateBtn('Save Todo'));
-
-    return form;
-  };
-
-  const clearTodoField = (el) => {
-    el.todoTitle.value = '';
-    el.todoDesc.value = '';
-    el.todoDue.value = '';
-    el.todoPriority.value = '';
-  };
-
-  const generateTodo = (todo, project) => {
-    const todoItem = myCreateElement('div', 'todo');
-
-    const todoRmBtn = document.createElement('button');
-    todoRmBtn.classList.add('todo__rmbtn', 'rmbtn');
-    todoRmBtn.textContent = 'x';
-
-    const todoAtt = myCreateElement('div', 'todo__att');
-    const todoPriority = document.createElement('div');
-    todoPriority.classList.add('todo__priority', todo.priority);
-    todoPriority.textContent = todo.priority;
-    const todoLimit = myCreateElement('div', 'todo__limit');
-    const icon = myCreateElement('span', 'iconify');
-    icon.setAttribute('data-icon', 'ant-design:clock-circle-filled');
-    icon.setAttribute('data-inline', 'false');
-    const date = document.createElement('span');
-    date.textContent = todo.dueDate;
-    todoLimit.appendChild(icon);
-    todoLimit.appendChild(date);
-    todoAtt.appendChild(todoPriority);
-    todoAtt.appendChild(todoLimit);
-
-    const todoTitle = myCreateElement('h3', 'todo__title');
-    todoTitle.textContent = todo.title;
-
-    const todoMoreBtn = document.createElement('button');
-    todoMoreBtn.classList.add('todo__more', 'btn');
-    todoMoreBtn.textContent = 'More';
-
-    const todoDetail = myCreateElement('div', 'todo__detail');
-
-    const todoDesc = myCreateElement('p', 'todo__desc');
-    todoDesc.textContent = todo.description;
-    todoDetail.appendChild(todoDesc);
-    const editTodoForm = generateForm(todo, 'edit-todo-form');
-    todoDetail.appendChild(editTodoForm);
-    todoItem.appendChild(todoRmBtn);
-    todoItem.appendChild(todoAtt);
-    todoItem.appendChild(todoTitle);
-    todoItem.appendChild(todoMoreBtn);
-    todoItem.appendChild(todoDetail);
-
-    todoRmBtn.addEventListener('click', () => {
-      todoController(projects, project).removeTodo(todo.id);
-      renderProjects(projects);
-      openCurrentTabAndContainer(project);
-    });
-
-    todoMoreBtn.addEventListener('click', () => {
-      todoMoreBtn.textContent = todoMoreBtn.textContent === 'More' ? 'Close' : 'More';
-      todoMoreBtn.nextElementSibling.classList.toggle('open');
-    });
-
-    editTodoForm.addEventListener('submit', e => {
-      e.preventDefault();
-      todoController(projects, project).overwriteTodo(todo, e.target.elements);
-      renderProjects(projects);
-      clearTodoField(e.target.elements);
-      openCurrentTabAndContainer(project);
-    });
-
-    return todoItem;
-  };
-
-  const generateProjectFooter = (project, projectController) => {
+  const generateProjectFooter = (project) => {
     const prFooter = document.createElement('div');
 
     const addTodoBtn = generateBtn('Add Todo');
     addTodoBtn.classList.add('add-todo-btn');
-    const addTodoForm = generateForm(null, 'add-todo-form');
+    const addTodoForm = todoView(project).generateForm(null, 'add-todo-form');
     const prRmBtn = generateBtn('Remove Project');
     prRmBtn.classList.add('project__rmbtn');
 
@@ -142,15 +24,17 @@ const projectView = () => {
       const description = e.target.elements.todoDesc.value;
       const dueDate = e.target.elements.todoDue.value;
       const priority = e.target.elements.todoPriority.value;
-      todoController(projects, project).createTodo(title, description, dueDate, priority);
-      renderProjects(projects);
-      clearTodoField(e.target.elements);
+      todoController(storage.projects, project).createTodo(title, description, dueDate, priority);
+      //generateProject(projectController.currentProject, projects);
+
+      renderProjects(storage.projects);
+      todoView(project).clearTodoField(e.target.elements);
       openCurrentTabAndContainer(project);
     });
     prRmBtn.addEventListener('click', () => {
       projectController.removeProject(project.id);
-      generateProject(projectController(projects).currentProject, projectController(projects));
-      renderProjects(projects);
+      generateProject(projectController.currentProjec);
+      renderProjects(storage.projects);
     });
 
     prFooter.appendChild(addTodoBtn);
@@ -170,32 +54,32 @@ const projectView = () => {
     tabItem.classList.add('active');
   };
 
-  const generatePrTabs = (projects) => {
+  const generatePrTabs = () => {
     const tabsContainer = document.querySelector('.project-tabs');
-    generateProject(projectController.currentProject, projectController(projects));
+    generateProject(projectController.currentProject);
 
-    if (projects.length > 0) {
-      projects.forEach((pro) => {
+    if (storage.projects.length > 0) {
+      storage.projects.forEach((pro) => {
         const tabItem = myCreateElement('div', 'project-tabs__item');
         tabItem.textContent = pro.title;
         tabItem.setAttribute('data-id', pro.id);
         tabsContainer.appendChild(tabItem);
         tabItem.addEventListener('click', (e) => {
-          const pr = projectController(projects).getProject(e.target.getAttribute('data-id'));
-          generateProject(pr, projectController(projects));
+          const pr = projectController.getProject(e.target.getAttribute('data-id'));
+          generateProject(pr);
           openTab(pr, e.target);
         });
       });
     }
   };
 
-  const renderProjects = (projects) => {
+  const renderProjects = () => {
     document.querySelector('.project-tabs').innerHTML = '';
     document.querySelector('.main__right').innerHTML = '';
-    generatePrTabs(projects);
+    generatePrTabs();
   };
 
-  const generatePrContainer = (project, projectController) => {
+  const generatePrContainer = (project) => {
     const prContainer = myCreateElement('div', 'project-container');
     prContainer.setAttribute('id', project.id);
 
@@ -217,7 +101,7 @@ const projectView = () => {
 
     if (project.todos.length > 0) {
       project.todos.forEach(todo => {
-        prTodosItem.appendChild(generateTodo(todo, project));
+        prTodosItem.appendChild(todoView(project).generateTodo(todo, project, renderProjects));
       });
     }
     prTodosItem.appendChild(generateProjectFooter(project, projectController));
@@ -225,10 +109,10 @@ const projectView = () => {
     return prContainer;
   };
 
-  const generateProject = (project, projectController) => {
+  const generateProject = (project) => {
     const mainRight = document.querySelector('.main__right');
     if (project == null) { project = projectController.currentProject; }
-    mainRight.appendChild(generatePrContainer(project, projectController));
+    mainRight.appendChild(generatePrContainer(project));
   };
 
   const clearPrField = (el) => {
@@ -236,7 +120,7 @@ const projectView = () => {
     el.prDesc.value = '';
   };
 
-  const getUserInput = (projectController) => {
+  const getUserInput = () => {
     const formAddProject = document.querySelector('.add-project-form');
 
     formAddProject.addEventListener('submit', (e) => {
@@ -244,8 +128,8 @@ const projectView = () => {
       const title = e.target.elements.prTitle.value;
       const description = e.target.elements.prDesc.value;
       const project = projectController.createProject(title, description);
-      renderProjects(projects);
-      generateProject(project, projectController);
+      renderProjects();
+      //generateProject(project, projectController);
       clearPrField(e.target.elements);
       openCurrentTabAndContainer(project);
     });
