@@ -5,13 +5,19 @@
 
 ## About the Project
 
-This project is taken from [The Odin Project](https://www.theodinproject.com/courses/javascript/lessons/todo-list)
+This project is taken from [The Odin Project](https://www.theodinproject.com/courses/javascript/lessons/todo-list).
 
-We will create a todo list that will be saved at the local storage.<br>
-The todo list can be arranged in different projects.<br>
-You can create or remove a project and add as many todos as you want to that project.<br>
-There is also the posibility to edit or remove todos.<br>
+In this application, Users can:
+- Create a to-do list that is saved at the user's local storage
+- Arrange todos for different projects
+- Create or remove a project and add as many todos as they want to each project
+- Edit or remove todos
 
+And We built this application taking care of:
+- Organized files and functions based on the MVC concept
+- Helper functions to create DOM elements efficiently
+- Put a tag to each todo corresponding to its priority with different colors
+- Add default data in order to show how to use this app for users
 
 ## Table of Contents
 
