@@ -6,9 +6,9 @@ const controller = () => {
 
   const createProject = (title, description) => {
     const project = new Project(title, description);
-    currentProject = project;
     storage.projects.push(project);
     storage.save();
+    currentProject = project;
     return project;
   };
 
@@ -20,13 +20,13 @@ const controller = () => {
 
   const removeProject = (id) => {
     const index = storage.projects.findIndex(project => project.id === id);
-    currentProject = storage.projects[0];
     storage.projects.splice(index, 1);
+    currentProject = storage.projects[0];
     storage.save();
   };
 
   return {
-    createProject, currentProject, getProject, removeProject
+    createProject, currentProject, getProject, removeProject,
   };
 };
 

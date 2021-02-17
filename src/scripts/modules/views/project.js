@@ -24,17 +24,19 @@ const projectView = () => {
       const description = e.target.elements.todoDesc.value;
       const dueDate = e.target.elements.todoDue.value;
       const priority = e.target.elements.todoPriority.value;
-      todoController(storage.projects, project).createTodo(title, description, dueDate, priority);
-      //generateProject(projectController.currentProject, projects);
-
-      renderProjects(storage.projects);
+      todoController(project).createTodo(title, description, dueDate, priority);
       todoView(project).clearTodoField(e.target.elements);
+      generateProject(project);
+      renderProjects();
       openCurrentTabAndContainer(project);
     });
     prRmBtn.addEventListener('click', () => {
       projectController.removeProject(project.id);
-      generateProject(projectController.currentProjec);
-      renderProjects(storage.projects);
+      // eslint-disable-next-line prefer-destructuring
+      projectController.currentProject = storage.projects[0];
+      generateProject(projectController.currentProject);
+      renderProjects();
+      openCurrentTabAndContainer(projectController.currentProject);
     });
 
     prFooter.appendChild(addTodoBtn);
@@ -65,9 +67,9 @@ const projectView = () => {
         tabItem.setAttribute('data-id', pro.id);
         tabsContainer.appendChild(tabItem);
         tabItem.addEventListener('click', (e) => {
-          const pr = projectController.getProject(e.target.getAttribute('data-id'));
-          generateProject(pr);
-          openTab(pr, e.target);
+          projectController.currentProject = projectController.getProject(e.target.getAttribute('data-id'));
+          generateProject(projectController.currentProject);
+          openTab(projectController.currentProject, e.target);
         });
       });
     }
@@ -129,13 +131,15 @@ const projectView = () => {
       const description = e.target.elements.prDesc.value;
       const project = projectController.createProject(title, description);
       renderProjects();
-      //generateProject(project, projectController);
+      generateProject(project);
       clearPrField(e.target.elements);
       openCurrentTabAndContainer(project);
     });
   };
 
-  return { getUserInput, generatePrTabs, generateProject, renderProjects };
+  return {
+    getUserInput, generatePrTabs, generateProject, renderProjects,
+  };
 };
 
 export { projectView as default };

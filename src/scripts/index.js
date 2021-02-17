@@ -18,10 +18,8 @@ if (storage.projects.length > 0) {
   container[0].classList.add('active');
 }
 
-const addPrBtns = document.querySelectorAll('.add-project-btn');
-addPrBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.textContent = btn.textContent === 'Add Project' ? 'Close' : 'Add Project';
-    btn.nextElementSibling.classList.toggle('open');
-  });
+const addPrBtn = document.querySelector('.add-project-btn');
+addPrBtn.addEventListener('click', () => {
+  addPrBtn.textContent = addPrBtn.textContent === 'Add Project' ? 'Close' : 'Add Project';
+  addPrBtn.nextElementSibling.classList.toggle('open');
 });

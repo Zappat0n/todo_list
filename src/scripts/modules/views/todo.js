@@ -1,5 +1,5 @@
 import {
-  myCreateElement, generateBtn, generateFormField, openCurrentTabAndContainer
+  myCreateElement, generateBtn, generateFormField, openCurrentTabAndContainer,
 } from './helpers';
 import todoController from '../controller/todo';
 

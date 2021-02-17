@@ -39,4 +39,6 @@ const openCurrentTabAndContainer = (project) => {
   });
 };
 
-export { myCreateElement, generateFormField, generateBtn, openCurrentTabAndContainer };
+export {
+  myCreateElement, generateFormField, generateBtn, openCurrentTabAndContainer,
+};
