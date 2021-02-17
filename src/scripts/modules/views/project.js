@@ -5,6 +5,7 @@ import todoController from '../controller/todo';
 // eslint-disable-next-line import/no-cycle
 import renderProjects from './renderProjects';
 import { myCreateElement, generateBtn, generateFormField } from './helpers';
+import projectController from '../controller/project';
 
 const projectView = () => {
   const openCurrentTabAndContainer = (project) => {
@@ -165,6 +166,8 @@ const projectView = () => {
     document.querySelectorAll('.project-container').forEach(item => {
       item.classList.remove('active');
     });
+    console.log(project);
+    console.log(document.getElementById(project.id));
 
     document.getElementById(project.id).classList.add('active');
     tabItem.classList.add('active');
@@ -172,6 +175,7 @@ const projectView = () => {
 
   const generatePrTabs = (projects) => {
     const tabsContainer = document.querySelector('.project-tabs');
+    generateProject(projectController.currentProject, projectController(projects));
 
     if (projects.length > 0) {
       projects.forEach((pro) => {
@@ -180,7 +184,10 @@ const projectView = () => {
         tabItem.setAttribute('data-id', pro.id);
         tabsContainer.appendChild(tabItem);
         tabItem.addEventListener('click', (e) => {
-          openTab(pro, e.target);
+          const pr = projectController(projects).getProject(e.target.getAttribute('data-id'));
+
+          generateProject(pr, projectController(projects));
+          openTab(pr, e.target);
         });
       });
     }
@@ -218,6 +225,7 @@ const projectView = () => {
 
   const generateProject = (project, projectController) => {
     const mainRight = document.querySelector('.main__right');
+    if (project == null) { project = projectController.currentProject; }
     mainRight.appendChild(generatePrContainer(project, projectController));
   };
 
@@ -235,6 +243,7 @@ const projectView = () => {
       const description = e.target.elements.prDesc.value;
       const project = projectController.createProject(title, description);
       renderProjects(projects);
+      generateProject(project, projectController);
       clearPrField(e.target.elements);
       openCurrentTabAndContainer(project);
     });
