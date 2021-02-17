@@ -1,0 +1,41 @@
+.btn {
+  padding: 0.6rem 2.4rem;
+  border: 1px solid $black;
+  cursor: pointer;
+  background: $black;
+  color: $white;
+  text-transform: uppercase;
+  font-family: inherit;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 90%;
+  border-radius: 3px;
+  margin: 1rem auto;
+  transition: all 0.4s;
+
+  &:hover {
+    background: $white;
+    color: $black;
+  }
+
+  &.add-todo-btn {
+    background: $red;
+    border-color: $red;
+    margin-right: 2rem;
+
+    &:hover {
+      background: $white;
+      color: $red;
+    }
+  }
+}
+
+.rmbtn {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: none;
+  font-weight: bold;
+  font-family: inherit;
+  font-size: 130%;
+}

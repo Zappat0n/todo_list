@@ -1,0 +1,50 @@
+.form {
+  background: $yellow;
+  width: 100%;
+  max-width: 40rem;
+  margin: 2rem 0;
+  padding: 1.6rem;
+  border-radius: 3px;
+
+  &__field {
+    margin-bottom: 0.6rem;
+  }
+
+  label {
+    display: block;
+    width: 100%;
+  }
+
+  input,
+  select,
+  textarea {
+    display: block;
+    width: 100%;
+    padding: 0.4rem;
+    font-family: inherit;
+    color: $black;
+  }
+
+  &.add-project-form {
+    width: 90%;
+    padding: 1rem;
+    display: none;
+
+    &.open {
+      display: block;
+    }
+  }
+
+  &.edit-todo-form {
+    //
+    margin: 2rem 0 0;
+  }
+
+  &.add-todo-form {
+    display: none;
+
+    &.open {
+      display: block;
+    }
+  }
+}

@@ -1,38 +1,51 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-const isDevelopment = process.env.NODE_ENV === 'development';
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: isDevelopment ? '[name].css' : '[name].[contenthash].css',
-      chunkFilename: isDevelopment ? '[id].css' : '[id].[contenthash].css',
-    }),
-  ],
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-  devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
+  },
+  entry: {
+    index: './src/scripts/index.js',
+  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    assetModuleFilename: 'images/[hash][ext]',
+    publicPath: '',
+  },
+  watch: true,
+  experiments: {
+    asset: true,
   },
   module: {
     rules: [
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'style-loader',
           'css-loader',
           'sass-loader',
         ],
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
+        test: /\.(?:ico|gif|png|jpg|svg|jpeg)$/i,
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 4 * 1024, // 4kb
+          },
+        },
       },
     ],
   },

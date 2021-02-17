@@ -1,0 +1,62 @@
+.project-container {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+.project {
+  position: relative;
+
+  &__item {
+    margin-bottom: 2rem;
+  }
+
+  &__title {
+    font-size: 3.4rem;
+    margin-bottom: 1rem;
+    word-break: break-all;
+    line-height: 1.3;
+  }
+
+  &__desc {
+    margin-bottom: 1.6rem;
+  }
+
+  &__rmbtn {
+    background: $grey;
+    border-color: $grey;
+
+    &:hover {
+      color: $grey;
+    }
+  }
+}
+
+.project-tabs {
+  width: 90%;
+
+  &__item {
+    background: $light-grey-2;
+    margin-bottom: 0.4rem;
+    padding: 1rem 2rem;
+    position: relative;
+    word-break: break-all;
+    line-height: 1.3;
+    border-top-left-radius: 10rem;
+    border-bottom-left-radius: 10rem;
+    cursor: pointer;
+
+    span {
+      display: block;
+      max-width: 86%;
+    }
+
+    &.active {
+      border-bottom: 3px solid $blue;
+      background: rgba($blue, 0.5);
+      font-weight: bold;
+    }
+  }
+}
