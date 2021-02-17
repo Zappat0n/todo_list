@@ -3,7 +3,6 @@ import projects from '../../index';
 // eslint-disable-next-line import/no-cycle
 import todoController from '../controller/todo';
 // eslint-disable-next-line import/no-cycle
-import renderProjects from './renderProjects';
 import { myCreateElement, generateBtn, generateFormField } from './helpers';
 import projectController from '../controller/project';
 
@@ -150,6 +149,7 @@ const projectView = () => {
     });
     prRmBtn.addEventListener('click', () => {
       projectController.removeProject(project.id);
+      generateProject(projectController(projects).currentProject, projectController(projects));
       renderProjects(projects);
     });
 
@@ -166,9 +166,6 @@ const projectView = () => {
     document.querySelectorAll('.project-container').forEach(item => {
       item.classList.remove('active');
     });
-    console.log(project);
-    console.log(document.getElementById(project.id));
-
     document.getElementById(project.id).classList.add('active');
     tabItem.classList.add('active');
   };
@@ -185,12 +182,17 @@ const projectView = () => {
         tabsContainer.appendChild(tabItem);
         tabItem.addEventListener('click', (e) => {
           const pr = projectController(projects).getProject(e.target.getAttribute('data-id'));
-
           generateProject(pr, projectController(projects));
           openTab(pr, e.target);
         });
       });
     }
+  };
+
+  const renderProjects = (projects) => {
+    document.querySelector('.project-tabs').innerHTML = '';
+    document.querySelector('.main__right').innerHTML = '';
+    generatePrTabs(projects);
   };
 
   const generatePrContainer = (project, projectController) => {
@@ -249,7 +251,7 @@ const projectView = () => {
     });
   };
 
-  return { getUserInput, generatePrTabs, generateProject };
+  return { getUserInput, generatePrTabs, generateProject, renderProjects };
 };
 
 export { projectView as default };
