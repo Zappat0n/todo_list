@@ -13,8 +13,7 @@ const projectController = () => {
   };
 
   const getProject = (id) => {
-    const index = storage.projects.findIndex(project => project.id === id);
-    currentProject = storage.projects[index];
+    currentProject = storage.projects.find((project) => project.id === id);
     return currentProject;
   };
 
