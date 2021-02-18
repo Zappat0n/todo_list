@@ -1,10 +1,9 @@
 import storage from '../db/storage';
 import todoController from '../controller/todo';
 import { myCreateElement, generateBtn, openCurrentTabAndContainer } from './helpers';
-import projectController from '../controller/project';
 import todoView from './todo';
 
-const projectView = () => {
+const projectView = (projectController) => {
   const generateProject = (project) => {
     const mainRight = document.querySelector('.main__right');
     if (project == null) { project = projectController.currentProject; }
@@ -45,12 +44,11 @@ const projectView = () => {
       openCurrentTabAndContainer(project);
     });
     prRmBtn.addEventListener('click', () => {
-      projectController.removeProject(project.id);
-      // eslint-disable-next-line prefer-destructuring
-      projectController.currentProject = storage.projects[0];
-      generateProject(projectController.currentProject);
+      const nextProject = projectController.removeProject(project.id);
+      projectController.currentProject = nextProject;
+      generateProject(nextProject);
       renderProjects();
-      openCurrentTabAndContainer(projectController.currentProject);
+      openCurrentTabAndContainer(nextProject);
     });
 
     prFooter.appendChild(addTodoBtn);
