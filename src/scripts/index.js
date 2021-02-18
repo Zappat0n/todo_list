@@ -2,15 +2,17 @@ import '../scss/styles.scss';
 import projectView from './modules/views/project';
 import storage from './modules/db/storage';
 import defaultData from './modules/db/defaultData';
+import projectController from './modules/controller/project';
 
 if (storage.projects.length === 0) {
   localStorage.setItem('projects', JSON.stringify(defaultData));
   storage.load();
 }
-console.log(storage);
 
-projectView().getUserInput();
-projectView().renderProjects();
+const controller = projectController();
+
+projectView(controller).getUserInput();
+projectView(controller).renderProjects();
 
 if (storage.projects.length > 0) {
   const tabs = document.querySelectorAll('.project-tabs__item');
