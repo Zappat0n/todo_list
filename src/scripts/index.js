@@ -1,58 +1,26 @@
 import '../scss/styles.scss';
-import Project from './modules/models/project';
-import { loadData, saveData } from './modules/db/storage';
-import projectController from './modules/controller/project';
-import projectForm from './modules/views/project_form';
+import projectView from './modules/views/project';
+import storage from './modules/db/storage';
+import defaultData from './modules/db/defaultData';
 
-const controller = projectController(loadData());
+if (storage.projects.length === 0) {
+  localStorage.setItem('projects', JSON.stringify(defaultData));
+  storage.load();
+}
+console.log(storage);
 
-projectForm().getUserInput(controller);
+projectView().getUserInput();
+projectView().renderProjects();
 
+if (storage.projects.length > 0) {
+  const tabs = document.querySelectorAll('.project-tabs__item');
+  tabs[0].classList.add('active');
+  const container = document.querySelectorAll('.project-container');
+  container[0].classList.add('active');
+}
 
-
-// More Btns
-const moreBtns = document.querySelectorAll('.todo__more');
-moreBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.textContent = btn.textContent === 'More' ? 'Close' : 'More';
-    btn.nextElementSibling.classList.toggle('open');
-  });
+const addPrBtn = document.querySelector('.add-project-btn');
+addPrBtn.addEventListener('click', () => {
+  addPrBtn.textContent = addPrBtn.textContent === 'Add Project' ? 'Close' : 'Add Project';
+  addPrBtn.nextElementSibling.classList.toggle('open');
 });
-
-// Add Todo Btns
-const addTodoBtns = document.querySelectorAll('.add-todo-btn');
-addTodoBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.textContent = btn.textContent === 'Add Todo' ? 'Close' : 'Add Todo';
-    btn.nextElementSibling.classList.toggle('open');
-  });
-});
-
-// Add Project Btns
-const addPrBtns = document.querySelectorAll('.add-project-btn');
-addPrBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.textContent = btn.textContent === 'Add Project' ? 'Close' : 'Add Project';
-    btn.nextElementSibling.classList.toggle('open');
-  });
-});
-
-const openTab = (id) => {
-  document.querySelectorAll('.project-tabs__item').forEach(tab => {
-    tab.classList.remove('active');
-  });
-  document.querySelectorAll('.project-container').forEach(item => {
-    item.classList.remove('active');
-  });
-
-  document.getElementById(id).classList.add('active');
-  document.querySelector(`div[data-project='${id}']`).classList.add('active');
-};
-
-document.querySelectorAll('.project-tabs__item').forEach(tab => {
-  tab.addEventListener('click', e => {
-    openTab(e.target.getAttribute('data-project'));
-  });
-});
-
-document.querySelector('.default-open').classList.add('active');

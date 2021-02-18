@@ -1,14 +1,34 @@
 import Project from '../models/project';
-import { saveData } from '../db/storage';
+import storage from '../db/storage';
 
-const projectController = (projects) => {
+const controller = () => {
+  let currentProject = storage.projects[0];
+
   const createProject = (title, description) => {
     const project = new Project(title, description);
-    projects.push(project);
-    saveData(projects);
+    storage.projects.push(project);
+    storage.save();
+    currentProject = project;
+    return project;
   };
 
-  return { createProject };
+  const getProject = (id) => {
+    const index = storage.projects.findIndex(project => project.id === id);
+    currentProject = storage.projects[index];
+    return currentProject;
+  };
+
+  const removeProject = (id) => {
+    const index = storage.projects.findIndex(project => project.id === id);
+    storage.projects.splice(index, 1);
+    storage.save();
+  };
+
+  return {
+    createProject, currentProject, getProject, removeProject,
+  };
 };
+
+const projectController = controller();
 
 export { projectController as default };
