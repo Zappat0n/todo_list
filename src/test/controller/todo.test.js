@@ -25,4 +25,33 @@ describe('todo Controller', () => {
     todoController(project).addTodo(todo);
     expect(project.todos.length).toBe(1);
   });
+
+  it('edit Todo', () => {
+    const el = {
+      todoTitle: {
+        value: 'Bathroom',
+      },
+      todoDesc: {
+        value: 'Clean',
+      },
+      todoDue: {
+        value: new Date(),
+      },
+      todoPriority: {
+        value: 'Medium',
+      },
+    };
+    todoController(project).overwriteTodo(todo, el);
+    const newTodo = project.todos.find((t) => t.id === 1);
+    expect(newTodo.title).toBe('Bathroom');
+    expect(newTodo.description).toBe('Clean');
+    expect(newTodo.dueDate).toBe(el.todoDue.value);
+    expect(newTodo.priority).toBe('Medium');
+  });
+
+  it('remove Todo', () => {
+    todoController(project).removeTodo(1);
+    const newTodo = project.todos.find((t) => t.id === 1);
+    expect(newTodo).toBeUndefined();
+  });
 });
