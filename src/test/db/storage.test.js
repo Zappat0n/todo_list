@@ -1,8 +1,7 @@
 import storage from '../../scripts/modules/db/storage';
 import Project from '../../scripts/modules/models/project';
 
-describe('project View', () => {
-
+describe('storage', () => {
   it('loads empty array the first time', () => {
     storage.load();
     expect(storage.projects.length).toBe(0);
