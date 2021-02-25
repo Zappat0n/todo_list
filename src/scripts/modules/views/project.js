@@ -138,7 +138,12 @@ const projectView = (projectController) => {
   };
 
   return {
-    getUserInput, generatePrContainer, generateProjectFooter, generatePrTabs, generateProject, renderProjects,
+    getUserInput,
+    generatePrContainer,
+    generateProjectFooter,
+    generatePrTabs,
+    generateProject,
+    renderProjects,
   };
 };
 

@@ -1,4 +1,6 @@
-import { myCreateElement, generateFormField, generateBtn, openCurrentTabAndContainer } from '../../scripts/modules/views/helpers';
+import {
+  myCreateElement, generateFormField, generateBtn, openCurrentTabAndContainer,
+} from '../../scripts/modules/views/helpers';
 
 test('should return new element with the given arguments including tag and class name', () => {
   const element = myCreateElement('div', 'my-test-class');
