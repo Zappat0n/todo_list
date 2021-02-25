@@ -11,9 +11,7 @@ const projectController = () => {
     return project;
   };
 
-  const createProject = (title, description) => {
-    return addProject(new Project(title, description));
-  };
+  const createProject = (title, description) => addProject(new Project(title, description));
 
   const getProject = (id) => {
     currentProject = storage.projects.find((project) => project.id === id);
