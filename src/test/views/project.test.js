@@ -14,14 +14,16 @@ describe('project View', () => {
     project.id = 1;
     project.title = 'House';
     project.description = '';
-    project.todos = [todo];
+    project.todos = [todo, todo];
   });
 
   it('generate container for projects', () => {
     const container = projectView(controller).generatePrContainer(project);
     expect(container.nodeName).toBe('DIV');
     expect(container.getAttribute('id')).toBe('1');
-    expect(container.children[0].children[0].children[2].children.length).toBe(2);
+    expect(container.children[0].children[0].children[2].children.length).toBe(
+      project.todos.length + 1,
+    );
   });
 
   it('generateProjectFooter', () => {
