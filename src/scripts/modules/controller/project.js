@@ -4,12 +4,15 @@ import storage from '../db/storage';
 const projectController = () => {
   let currentProject = storage.projects[0];
 
-  const createProject = (title, description) => {
-    const project = new Project(title, description);
+  const addProject = (project) => {
     storage.projects.push(project);
     storage.save();
     currentProject = project;
     return project;
+  };
+
+  const createProject = (title, description) => {
+    return addProject(new Project(title, description));
   };
 
   const getProject = (id) => {
@@ -27,7 +30,7 @@ const projectController = () => {
   };
 
   return {
-    createProject, currentProject, getProject, removeProject,
+    addProject, createProject, currentProject, getProject, removeProject,
   };
 };
 
