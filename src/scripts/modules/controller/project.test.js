@@ -3,6 +3,7 @@ import storage from '../db/storage';
 
 describe('project Controller', () => {
   const project = {};
+  const controller = projectController();
 
   beforeAll(() => {
     storage.load();
@@ -13,8 +14,17 @@ describe('project Controller', () => {
   });
 
   it('project is created', () => {
-    const controller = projectController();
     controller.addProject(project);
     expect(storage.projects.find((project) => project.id === 1)).toBeDefined();
+  });
+
+  it('getProject is fine', () => {
+    const pr = controller.getProject(1);
+    expect(pr.id).toBe(1);
+  });
+
+  it('project is removed', () => {
+    controller.removeProject(1);
+    expect(storage.projects.find((project) => project.id === 1)).toBeUndefined();
   });
 });
