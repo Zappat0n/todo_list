@@ -1,4 +1,4 @@
-import Todo from '../../src/scripts/modules/models/todo';
+import Todo from '../../scripts/modules/models/todo';
 
 test('should return todo object with the given arguments including title, description, dueDate and priority', () => {
   const todo = new Todo('My Todo', 'My description', 20201231, 'medium');

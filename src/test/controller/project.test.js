@@ -1,5 +1,5 @@
-import projectController from '../../src/scripts/modules/controller/project';
-import storage from '../../src/scripts/modules/db/storage';
+import projectController from '../../scripts/modules/controller/project';
+import storage from '../../scripts/modules/db/storage';
 
 describe('project Controller', () => {
   const project = {};

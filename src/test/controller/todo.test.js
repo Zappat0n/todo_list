@@ -1,6 +1,6 @@
-import projectController from '../../src/scripts/modules/controller/project';
-import todoController from '../../src/scripts/modules/controller/todo';
-import storage from '../../src/scripts/modules/db/storage';
+import projectController from '../../scripts/modules/controller/project';
+import todoController from '../../scripts/modules/controller/todo';
+import storage from '../../scripts/modules/db/storage';
 
 describe('todo Controller', () => {
   const project = {};
