@@ -5,9 +5,9 @@ const projectForm = () => {
       e.preventDefault();
       controller.createProject(e.target.elements.prTitle.value, e.target.elements.prDesc.value);
     });
-  }
+  };
 
   return { getUserInput };
-}
+};
 
 export { projectForm as default };
