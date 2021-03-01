@@ -12,4 +12,4 @@ class todo {
   }
 }
 
-export { todo as default };
+export default todo;

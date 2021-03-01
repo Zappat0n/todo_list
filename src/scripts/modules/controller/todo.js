@@ -31,4 +31,4 @@ const todoController = (project) => {
   };
 };
 
-export { todoController as default };
+export default todoController;

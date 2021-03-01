@@ -147,4 +147,4 @@ const projectView = (projectController) => {
   };
 };
 
-export { projectView as default };
+export default projectView;

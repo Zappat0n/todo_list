@@ -32,4 +32,4 @@ const projectController = () => {
   };
 };
 
-export { projectController as default };
+export default projectController;
