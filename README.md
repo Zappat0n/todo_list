@@ -56,7 +56,7 @@ e.g. $ git clone https://github.com/Zappat0n/todo_list.git
 7. Press Enter. Your local copy will be created.
 8. On your console, move to the place where this folder is cloned
 9. Run `npm run dev`, then server is automatically opened
-10. To test, run `npm run test`
+10. To test, run `npm run test`, then automatically it's running the jest
 
 ## Authors
 
@@ -98,3 +98,4 @@ This project is [MIT](./LICENSE) licensed.
 * [Odin Project: Todo List](https://www.theodinproject.com/courses/javascript/lessons/todo-list)
 * [uuid](https://github.com/uuidjs/uuid)
 * [iconify](https://iconify.design/icon-sets/)
+* [jest](https://jestjs.io/)
