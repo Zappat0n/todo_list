@@ -33,12 +33,13 @@ const projectView = (projectController) => {
     });
     addTodoForm.addEventListener('submit', e => {
       e.preventDefault();
-      const title = e.target.elements.todoTitle.value;
-      const description = e.target.elements.todoDesc.value;
-      const dueDate = e.target.elements.todoDue.value;
-      const priority = e.target.elements.todoPriority.value;
+      const { elements } = e.target;
+      const title = elements.todoTitle.value;
+      const description = elements.todoDesc.value;
+      const dueDate = elements.todoDue.value;
+      const priority = elements.todoPriority.value;
       todoController(project).createTodo(title, description, dueDate, priority);
-      todoView(project).clearTodoField(e.target.elements);
+      todoView(project).clearTodoField(elements);
       generateProject(project);
       renderProjects();
       openCurrentTabAndContainer(project);
