@@ -2,12 +2,15 @@ import Todo from '../models/todo';
 import storage from '../db/storage';
 
 const todoController = (project) => {
-  const createTodo = (title, description, dueDate, priority) => {
-    const todo = new Todo(title, description, dueDate, priority);
+  const addTodo = (todo) => {
     project.todos.push(todo);
     storage.save();
     return todo;
   };
+
+  const createTodo = (title, description, dueDate, priority) => addTodo(
+    new Todo(title, description, dueDate, priority),
+  );
 
   const removeTodo = (id) => {
     const index = project.todos.findIndex(todo => todo.id === id);
@@ -23,7 +26,9 @@ const todoController = (project) => {
     storage.save();
   };
 
-  return { createTodo, removeTodo, overwriteTodo };
+  return {
+    addTodo, createTodo, removeTodo, overwriteTodo,
+  };
 };
 
-export { todoController as default };
+export default todoController;

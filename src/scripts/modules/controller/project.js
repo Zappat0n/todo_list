@@ -4,13 +4,14 @@ import storage from '../db/storage';
 const projectController = () => {
   let currentProject = storage.projects[0];
 
-  const createProject = (title, description) => {
-    const project = new Project(title, description);
+  const addProject = (project) => {
     storage.projects.push(project);
     storage.save();
     currentProject = project;
     return project;
   };
+
+  const createProject = (title, description) => addProject(new Project(title, description));
 
   const getProject = (id) => {
     currentProject = storage.projects.find((project) => project.id === id);
@@ -27,8 +28,8 @@ const projectController = () => {
   };
 
   return {
-    createProject, currentProject, getProject, removeProject,
+    addProject, createProject, currentProject, getProject, removeProject,
   };
 };
 
-export { projectController as default };
+export default projectController;

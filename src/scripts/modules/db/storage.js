@@ -19,4 +19,4 @@ const storageManager = () => {
 
 const storage = storageManager();
 
-export { storage as default };
+export default storage;
